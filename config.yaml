@@ -10,9 +10,10 @@ fids:
   scan_paths: 
     [
       "/",
+      "/nonExisting",
     ]
   ignore_paths: 
     [
-      "/",
+      
     ]
   validate_mode: true
