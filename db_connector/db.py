@@ -4,7 +4,7 @@ import os.path
 
 class Database:
     def __init__(self, db_config):
-        filepath = 'src/fids_db.db'
+        filepath = 'fids_db.db'
         needs_init = False
         if not os.path.exists(filepath):
             needs_init = True
@@ -46,7 +46,7 @@ class Database:
                 "meta_seq int,"
                 "meta_size int,"
                 "meta_tag int,"
-                "meta_type int,"
+                "meta_type varchar(255),"
                 "meta_uid int,"
                 "name_flags int,"
                 "name_meta_addr int,"
@@ -58,7 +58,7 @@ class Database:
                 "name_short_name int,"
                 "name_short_name_size int,"
                 "name_tag int,"
-                "name_type int,"
+                "name_type varchar(255),"
                 " PRIMARY KEY (run_id, meta_addr)"
                 ");")
         )
@@ -216,8 +216,8 @@ class Database:
                 "block_addr,"
                 "length"
                 ")values("
-                "?,?,?,?,?,?); "),
-            run_id, file_addr, attribute_id, run.block_addr, run.length)
+                "?,?,?,?,?); "),
+            (run_id, file_addr, attribute_id, run.block_addr, run.length))
 
     def commit(self):
         self.conn.commit()

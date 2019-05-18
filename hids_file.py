@@ -36,11 +36,11 @@ class Attribute:
             self.parse_tsk_attribute(tsk_attribute)
 
     def parse_tsk_attribute(self, tsk_attribute):
-        self.flags = tsk_attribute.info.flags
+        self.flags = int(tsk_attribute.info.flags)
         self.id = tsk_attribute.info.id
         self.name = tsk_attribute.info.name
         self.name_size = tsk_attribute.info.name_size
-        self.at_type = tsk_attribute.info.type
+        self.at_type = str(tsk_attribute.info.type)
         self.runs = []
         for run in tsk_attribute:
             self.runs.append(Run(block_addr=run.addr, length=run.len))
@@ -144,7 +144,7 @@ class HidsFile:
         self.meta_addr = tsk_file.info.meta.addr
         self.meta_access_time = tsk_file.info.meta.atime
         self.meta_access_time_nano = tsk_file.info.meta.atime_nano
-        self.meta_attr_state = tsk_file.info.meta.attr_state
+        self.meta_attr_state = int(tsk_file.info.meta.attr_state)
         self.meta_content_len = tsk_file.info.meta.content_len
         self.meta_content_ptr = tsk_file.info.meta.content_ptr
         self.meta_creation_time = tsk_file.info.meta.crtime
@@ -161,7 +161,7 @@ class HidsFile:
         self.meta_seq = tsk_file.info.meta.seq
         self.meta_size = tsk_file.info.meta.size
         self.meta_tag = tsk_file.info.meta.tag
-        self.meta_type = tsk_file.info.meta.type
+        self.meta_type = str(tsk_file.info.meta.type)
         self.meta_uid = tsk_file.info.meta.uid
         self.name_flags = int(tsk_file.info.name.flags)
         self.name_meta_addr = tsk_file.info.name.meta_addr
@@ -173,7 +173,7 @@ class HidsFile:
         self.name_short_name = tsk_file.info.name.shrt_name
         self.name_short_name_size = tsk_file.info.name.shrt_name_size
         self.name_tag = tsk_file.info.name.tag
-        self.name_type = tsk_file.info.name.type
+        self.name_type = str(tsk_file.info.name.type)
         self.attributes = []
         for tsk_attribute in tsk_file:
             self.attributes.append(Attribute(tsk_attribute=tsk_attribute))

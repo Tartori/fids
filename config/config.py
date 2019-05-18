@@ -1,10 +1,10 @@
 import yaml
-from fids_config import FidsConfig
-from db_config import DbConfig
+from config.fids_config import FidsConfig
+from config.db_config import DbConfig
 
 
 class Config:
-    def __init__(self, config_file='./src/config.yaml'):
+    def __init__(self, config_file='./config.yaml'):
         with open(config_file, 'r') as ymlfile:
             cfg = yaml.load(ymlfile)
         print(cfg)
