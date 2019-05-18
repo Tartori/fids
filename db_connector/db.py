@@ -23,6 +23,14 @@ class Database:
                 " PRIMARY KEY(id)"
                 ");"))
         self.cursor.execute(
+            ("CREATE TABLE FIDS_ERROR("
+                "run_id varchar(255), "
+                "id varchar(255), "
+                "description text, "
+                "location varchar(255), "
+                " PRIMARY KEY(run_id, id)"
+                ");"))
+        self.cursor.execute(
             ("CREATE TABLE FIDS_FILE("
                 "run_id varchar(255),"
                 "path text, "
@@ -98,6 +106,15 @@ class Database:
              run.id,
              )
         )
+
+    def safe_error(self, error, run):
+        self.cursor.execute(
+            "INSERT INTO FIDS_ERROR(run_id, id, description, location) values (?,?,?,?); ",
+            (run.id,
+             error.id,
+             error.description,
+             error.location,
+             ))
 
     def safe_file(self, file, run):
         self.cursor.execute(

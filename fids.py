@@ -13,10 +13,15 @@ class FIDS:
 
         db.start_run(run)
         scanner = Scanner(fids_config=config.fids_config)
-        files = scanner.scan()
+        scanner.scan()
+        files = scanner.files
         print(files)
         for file in files:
             db.safe_file(file, run)
+
+        errors = scanner.errors
+        for error in errors:
+            db.safe_error(error, run)
         run.finish_run()
         db.finish_run(run)
         db.commit()
