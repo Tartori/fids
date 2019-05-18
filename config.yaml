@@ -1,0 +1,18 @@
+db:
+  host: localhost
+  port: 5702
+  dbname: fids
+  user: root
+  password: pw
+
+fids:
+  image_path: ../images/usb1.dd
+  scan_paths: 
+    [
+      "/",
+    ]
+  ignore_paths: 
+    [
+      "/",
+    ]
+  validate_mode: true
