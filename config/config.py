@@ -1,6 +1,7 @@
 import yaml
 from config.scan_config import ScanConfig
 from config.db_config import SqLiteDbConfig, RemoteDbConfig
+from config.detection_config import DetectionConfig
 
 
 class Config:
@@ -10,6 +11,8 @@ class Config:
         print(cfg)
         keys = cfg.keys()
         self.scan_config = ScanConfig(cfg['scan']) if 'scan' in keys else None
+        self.detection_config = DetectionConfig(
+            cfg['detection']) if 'detection' in keys else None
         if 'remote_db' in keys:
             self.db_config = RemoteDbConfig(cfg['remote_db'])
         elif 'sqlite' in keys:

@@ -1,5 +1,5 @@
 sqlite:
-  filename: fids_db4.db
+  filename: fids_db2.db
 
 scan:
   image_path: ../images/usb1.dd
@@ -13,3 +13,6 @@ scan:
       
     ]
   validate_mode: true
+detection:
+  fixed_values: []
+  compared: []

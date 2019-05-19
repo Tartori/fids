@@ -1,9 +1,12 @@
 class ScanConfig:
     def __init__(self, config):
-        self.image_path = config['image_path']
-        self.scan_paths = config['scan_paths']
-        self.ignore_paths = config['ignore_paths']
-        self.validate_mode = config['validate_mode']
+        keys = config.keys()
+        self.image_path = config['image_path'] if 'image_path' in keys else ''
+        self.scan_paths = config['scan_paths'] if 'scan_paths' in keys else [
+            '/']
+        self.ignore_paths = config['ignore_paths'] if 'ignore_paths' in keys else [
+        ]
+        self.validate_mode = config['validate_mode'] if 'validate_mode' in keys else False
 
     def __repr__(self):
         return ("FidsConfig("
