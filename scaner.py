@@ -23,23 +23,28 @@ class Scanner:
         return self.files
 
     def open_directory_rec(self, path):
-        if path in self.ignore_paths:
-            return
         try:
-            curDir = self.fs_info.open_dir(path)
-        except:
-            self.errors.append(FidsError(
-                description=f'could not open path \'{path}\'', location="Scanner.open_directory_rec"))
-            return
-        for element in curDir:
-            if element.info.name.type == pytsk3.TSK_FS_NAME_TYPE_DIR:
-                if(not element.info.name.name == b'.' and not element.info.name.name == b'..'):
-                    self.open_directory_rec(
-                        path + element.info.name.name.decode("ascii") + "/")
-            elif element.info.name.type == pytsk3.TSK_FS_NAME_TYPE_REG:
-                hids_file = HidsFile(path=path)
-                hids_file.parse_tsk_file(element)
-                self.files.append(hids_file)
+            if path in self.ignore_paths:
+                return
+            try:
+                curDir = self.fs_info.open_dir(path)
+            except:
+                self.errors.append(FidsError(
+                    description=f'could not open path \'{path}\'', location=f'Scanner.open_directory_rec(path=\'{path}\')'))
+                return
+            for element in curDir:
+                if element.info.name.type == pytsk3.TSK_FS_NAME_TYPE_DIR:
+                    if(not element.info.name.name == b'.' and not element.info.name.name == b'..'):
+                        self.open_directory_rec(
+                            path + element.info.name.name.decode("ascii") + "/")
+                elif element.info.name.type == pytsk3.TSK_FS_NAME_TYPE_REG:
+                    hids_file = HidsFile(path=path)
+                    hids_file.parse_tsk_file(element)
+                    self.files.append(hids_file)
+        except Exception as e:
+            self.errors.append(
+                FidsError(
+                    description=f'Unknown Error Occured \'{e}\'', location=f'Scanner.open_directory_rec(path=\'{path}\')'))
 
 
 if __name__ == "__main__":

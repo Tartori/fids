@@ -33,6 +33,7 @@ class Database:
         self.cursor.execute(
             ("CREATE TABLE FIDS_FILE("
                 "run_id varchar(255),"
+                "id varchar(255),"
                 "path text, "
                 "meta_addr int,"
                 "meta_access_time int,"
@@ -67,28 +68,28 @@ class Database:
                 "name_short_name_size int,"
                 "name_tag int,"
                 "name_type varchar(255),"
-                " PRIMARY KEY (run_id, meta_addr)"
+                " PRIMARY KEY (run_id, id)"
                 ");")
         )
         self.cursor.execute(
             ("CREATE TABLE FIDS_FILE_ATTRIBUTE("
                 "run_id varchar(255),"
-                "file_addr int,"
+                "file_id int,"
                 "flags int,"
                 "id int,"
                 "name varchar(255),"
                 "name_size int,"
                 "at_type varchar(255), "
-                " PRIMARY KEY (run_id, file_addr, id)"
+                " PRIMARY KEY (run_id, file_id, id)"
                 ");"))
         self.cursor.execute(
             ("CREATE TABLE FIDS_FILE_ATTRIBUTE_RUN("
                 "run_id varchar(255),"
-                "file_addr int,"
+                "file_id int,"
                 "attribute_id int, "
                 "block_addr int, "
                 "length int, "
-                " PRIMARY KEY(run_id, file_addr, attribute_id, block_addr) "
+                " PRIMARY KEY(run_id, file_id, attribute_id, block_addr) "
                 ");"))
 
     def start_run(self, run):
@@ -120,6 +121,7 @@ class Database:
         self.cursor.execute(
             ("INSERT INTO FIDS_FILE("
                 "run_id,"
+                "id,"
                 "path,"
                 "meta_addr,"
                 "meta_access_time,"
@@ -155,10 +157,11 @@ class Database:
                 "name_tag,"
                 "name_type"
                 ")values("
-                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); "
+                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); "
              ),
             (
                 run.id,
+                file.id,
                 file.path,
                 file.meta_addr,
                 file.meta_access_time,
@@ -196,13 +199,13 @@ class Database:
             )
         )
         for attribute in file.attributes:
-            self.save_attribute(attribute, file.meta_addr, run.id)
+            self.save_attribute(attribute, file.id, run.id)
 
-    def save_attribute(self, attribute, file_addr, run_id):
+    def save_attribute(self, attribute, file_id, run_id):
         self.cursor.execute(
             ("INSERT INTO FIDS_FILE_ATTRIBUTE("
                 "run_id,"
-                "file_addr,"
+                "file_id,"
                 "flags,"
                 "id,"
                 "name,"
@@ -213,7 +216,7 @@ class Database:
              ),
             (
                 run_id,
-                file_addr,
+                file_id,
                 attribute.flags,
                 attribute.id,
                 attribute.name,
@@ -222,19 +225,19 @@ class Database:
             )
         )
         for run in attribute.runs:
-            self.save_attribute_run(run, attribute.id, file_addr, run_id)
+            self.save_attribute_run(run, attribute.id, file_id, run_id)
 
-    def save_attribute_run(self, run, attribute_id, file_addr, run_id):
+    def save_attribute_run(self, run, attribute_id, file_id, run_id):
         self.cursor.execute(
             ("INSERT INTO FIDS_FILE_ATTRIBUTE_RUN("
                 "run_id,"
-                "file_addr,"
+                "file_id,"
                 "attribute_id,"
                 "block_addr,"
                 "length"
                 ")values("
                 "?,?,?,?,?); "),
-            (run_id, file_addr, attribute_id, run.block_addr, run.length))
+            (run_id, file_id, attribute_id, run.block_addr, run.length))
 
     def commit(self):
         self.conn.commit()

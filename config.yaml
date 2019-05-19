@@ -6,7 +6,7 @@ db:
   password: pw
 
 fids:
-  image_path: ../images/usb1.dd
+  image_path: /dev/nvme0n1p5
   scan_paths: 
     [
       "/",
