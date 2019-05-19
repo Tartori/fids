@@ -4,14 +4,20 @@ import uuid
 
 class Run:
     def __init__(self,
+                 id=None,
                  block_addr=0,
                  length=0,
                  ):
+        if id is None:
+            self.id = uuid.uuid1().hex
+        else:
+            self.id = id
         self.block_addr = block_addr
         self.length = length
 
     def __repr__(self):
         return ('Run('
+                f'id={self.id},'
                 f'block_addr={self.block_addr},'
                 f'length={self.length},'
                 ')')
