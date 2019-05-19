@@ -149,6 +149,79 @@ class HidsFile:
         self.name_type = name_type
         self.attributes = attributes
 
+    def set_everything(self,
+                       _,
+                       id,
+                       path,
+                       meta_addr,
+                       meta_access_time,
+                       meta_access_time_nano,
+                       meta_attr_state,
+                       meta_content_len,
+                       meta_content_ptr,
+                       meta_creation_time,
+                       meta_changed_time,
+                       meta_creation_time_nano,
+                       meta_changed_time_nano,
+                       meta_flags,
+                       meta_gid,
+                       meta_link,
+                       meta_mode,
+                       meta_modification_time,
+                       meta_modification_time_nano,
+                       meta_nlink,
+                       meta_seq,
+                       meta_size,
+                       meta_tag,
+                       meta_type,
+                       meta_uid,
+                       name_flags,
+                       name_meta_addr,
+                       name_meta_seq,
+                       name_name,
+                       name_size,
+                       name_par_addr,
+                       name_par_seq,
+                       name_short_name,
+                       name_short_name_size,
+                       name_tag,
+                       name_type):
+        self.id = id
+        self.path = path
+        self.meta_addr = meta_addr
+        self.meta_access_time = meta_access_time
+        self.meta_access_time_nano = meta_access_time_nano
+        self.meta_attr_state = meta_attr_state
+        self.meta_content_len = meta_content_len
+        self.meta_content_ptr = meta_content_ptr
+        self.meta_creation_time = meta_creation_time
+        self.meta_creation_time_nano = meta_creation_time_nano
+        self.meta_changed_time = meta_changed_time
+        self.meta_changed_time_nano = meta_changed_time_nano
+        self.meta_flags = meta_flags
+        self.meta_gid = meta_gid
+        self.meta_link = meta_link
+        self.meta_mode = meta_mode
+        self.meta_modification_time = meta_modification_time
+        self.meta_modification_time_nano = meta_modification_time_nano
+        self.meta_nlink = meta_nlink
+        self.meta_seq = meta_seq
+        self.meta_size = meta_size
+        self.meta_tag = meta_tag
+        self.meta_type = meta_type
+        self.meta_uid = meta_uid
+        self.name_flags = name_flags
+        self.name_meta_addr = name_meta_addr
+        self.name_meta_seq = name_meta_seq
+        self.name_name = name_name
+        self.name_size = name_size
+        self.name_par_addr = name_par_addr
+        self.name_par_seq = name_par_seq
+        self.name_short_name = name_short_name
+        self.name_short_name_size = name_short_name_size
+        self.name_tag = name_tag
+        self.name_type = name_type
+
     def set_path(self, path):
         self.path = path
 
