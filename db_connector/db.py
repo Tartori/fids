@@ -88,9 +88,10 @@ class Database:
                 "run_id varchar(255),"
                 "file_id varchar(255),"
                 "attribute_id varchar(255), "
+                "id varchar(255), "
                 "block_addr int, "
                 "length int, "
-                " PRIMARY KEY(run_id, file_id, attribute_id, block_addr) "
+                " PRIMARY KEY(run_id, file_id, attribute_id, id) "
                 ");"))
 
     def start_run(self, run):
@@ -236,11 +237,12 @@ class Database:
                 "run_id,"
                 "file_id,"
                 "attribute_id,"
+                "id,"
                 "block_addr,"
                 "length"
                 ")values("
-                "?,?,?,?,?); "),
-            (run_id, file_id, attribute_id, run.block_addr, run.length))
+                "?,?,?,?,?,?); "),
+            (run_id, file_id, attribute_id, run.id, run.block_addr, run.length))
 
     def commit(self):
         self.conn.commit()
