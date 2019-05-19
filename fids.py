@@ -14,8 +14,8 @@ class FIDS:
         db.start_run(run)
         scanner = Scanner(fids_config=config.fids_config)
         scanner.scan()
+
         files = scanner.files
-        print(files)
         for file in files:
             db.safe_file(file, run)
 
