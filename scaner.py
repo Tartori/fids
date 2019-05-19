@@ -36,10 +36,9 @@ class Scanner:
                     if(not element.info.name.name == b'.' and not element.info.name.name == b'..'):
                         self.open_directory_rec(
                             path + element.info.name.name.decode("ascii") + "/")
-                elif element.info.name.type == pytsk3.TSK_FS_NAME_TYPE_REG:
-                    hids_file = HidsFile(path=path)
-                    hids_file.parse_tsk_file(element)
-                    self.files.append(hids_file)
+                hids_file = HidsFile(path=path)
+                hids_file.parse_tsk_file(element)
+                self.files.append(hids_file)
         except Exception as e:
             self.errors.append(
                 FidsError(

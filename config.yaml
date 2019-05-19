@@ -2,11 +2,10 @@ sqlite:
   filename: fids_db4.db
 
 scan:
-  image_path: ../images/usb1.dd
+  image_path: /dev/nvme0n1p5
   scan_paths: 
     [
       "/",
-      "/nonExisting",
     ]
   ignore_paths: 
     [
