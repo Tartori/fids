@@ -1,6 +1,6 @@
 import yaml
-from config.fids_config import FidsConfig
-from config.db_config import DbConfig
+from config.scan_config import ScanConfig
+from config.db_config import SqLiteDbConfig, RemoteDbConfig
 
 
 class Config:
@@ -8,10 +8,14 @@ class Config:
         with open(config_file, 'r') as ymlfile:
             cfg = yaml.load(ymlfile)
         print(cfg)
-        self.fids_config = FidsConfig(cfg['fids'])
-        self.db_config = DbConfig(cfg['db'])
+        keys = cfg.keys()
+        self.scan_config = ScanConfig(cfg['scan']) if 'scan' in keys else None
+        if 'remote_db' in keys:
+            self.db_config = RemoteDbConfig(cfg['remote_db'])
+        elif 'sqlite' in keys:
+            self.db_config = SqLiteDbConfig(cfg['sqlite'])
 
     def __repr__(self):
         return ("Config("
-                f"fids_config={self.fids_config},"
+                f"scan_config={self.scan_config},"
                 f"db_config={self.db_config}")

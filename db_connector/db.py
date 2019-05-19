@@ -2,12 +2,10 @@ import sqlite3
 import os.path
 
 
-class Database:
+class DatabaseWriter:
     def __init__(self, db_config):
-        filepath = 'fids_db.db'
-        needs_init = False
-        if not os.path.exists(filepath):
-            needs_init = True
+        filepath = db_config.filename
+        needs_init = not os.path.exists(filepath)
         self.conn = sqlite3.connect(filepath)
         self.cursor = self.conn.cursor()
         if needs_init:

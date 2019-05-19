@@ -1,16 +1,15 @@
 import pytsk3
 from hids_file import HidsFile
-from config.fids_config import FidsConfig
 from fids_error import FidsError
 
 
 class Scanner:
 
-    def __init__(self, fids_config):
-        self.img_path = fids_config.image_path
-        self.paths = fids_config.scan_paths
-        self.ignore_paths = fids_config.ignore_paths
-        self.fids_config = fids_config
+    def __init__(self, scan_config):
+        self.img_path = scan_config.image_path
+        self.paths = scan_config.scan_paths
+        self.ignore_paths = scan_config.ignore_paths
+        self.scan_config = scan_config
 
     def scan(self):
         self.files = []

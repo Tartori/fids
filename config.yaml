@@ -1,12 +1,8 @@
-db:
-  host: localhost
-  port: 5702
-  dbname: fids
-  user: root
-  password: pw
+sqlite:
+  filename: fids_db4.db
 
-fids:
-  image_path: /dev/nvme0n1p5
+scan:
+  image_path: ../images/usb1.dd
   scan_paths: 
     [
       "/",
