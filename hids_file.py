@@ -1,4 +1,5 @@
 import pytsk3
+import uuid
 
 
 class Run:
@@ -59,6 +60,7 @@ class Attribute:
 class HidsFile:
     def __init__(
             self,
+            id=None,
             path="",
             meta_addr=0,
             meta_access_time=0,
@@ -95,6 +97,10 @@ class HidsFile:
             name_type=0,
             attributes=[],
     ):
+        if id is None:
+            self.id = uuid.uuid1().hex
+        else:
+            self.id = id
         self.path = path
         self.meta_addr = meta_addr
         self.meta_access_time = meta_access_time
@@ -141,45 +147,48 @@ class HidsFile:
             <http://www.sleuthkit.org/sleuthkit/docs/api-docs/4.5/structTSK__FS__FILE.html>
             Be sure to set the path either in the constructor or with the set_path function.
         """
-        self.meta_addr = tsk_file.info.meta.addr
-        self.meta_access_time = tsk_file.info.meta.atime
-        self.meta_access_time_nano = tsk_file.info.meta.atime_nano
-        self.meta_attr_state = int(tsk_file.info.meta.attr_state)
-        self.meta_content_len = tsk_file.info.meta.content_len
-        self.meta_content_ptr = tsk_file.info.meta.content_ptr
-        self.meta_creation_time = tsk_file.info.meta.crtime
-        self.meta_creation_time_nano = tsk_file.info.meta.crtime_nano
-        self.meta_changed_time = tsk_file.info.meta.ctime
-        self.meta_changed_time_nano = tsk_file.info.meta.ctime_nano
-        self.meta_flags = int(tsk_file.info.meta.flags)
-        self.meta_gid = tsk_file.info.meta.gid
-        self.meta_link = tsk_file.info.meta.link
-        self.meta_mode = int(tsk_file.info.meta.mode)
-        self.meta_modification_time = tsk_file.info.meta.mtime
-        self.meta_modification_time_nano = tsk_file.info.meta.mtime_nano
-        self.meta_nlink = tsk_file.info.meta.nlink
-        self.meta_seq = tsk_file.info.meta.seq
-        self.meta_size = tsk_file.info.meta.size
-        self.meta_tag = tsk_file.info.meta.tag
-        self.meta_type = str(tsk_file.info.meta.type)
-        self.meta_uid = tsk_file.info.meta.uid
-        self.name_flags = int(tsk_file.info.name.flags)
-        self.name_meta_addr = tsk_file.info.name.meta_addr
-        self.name_meta_seq = tsk_file.info.name.meta_seq
-        self.name_name = tsk_file.info.name.name.decode("ascii")
-        self.name_size = tsk_file.info.name.name_size
-        self.name_par_addr = tsk_file.info.name.par_addr
-        self.name_par_seq = tsk_file.info.name.par_seq
-        self.name_short_name = tsk_file.info.name.shrt_name
-        self.name_short_name_size = tsk_file.info.name.shrt_name_size
-        self.name_tag = tsk_file.info.name.tag
-        self.name_type = str(tsk_file.info.name.type)
+        if tsk_file.info.meta is not None:
+            self.meta_addr = tsk_file.info.meta.addr
+            self.meta_access_time = tsk_file.info.meta.atime
+            self.meta_access_time_nano = tsk_file.info.meta.atime_nano
+            self.meta_attr_state = int(tsk_file.info.meta.attr_state)
+            self.meta_content_len = tsk_file.info.meta.content_len
+            self.meta_content_ptr = tsk_file.info.meta.content_ptr
+            self.meta_creation_time = tsk_file.info.meta.crtime
+            self.meta_creation_time_nano = tsk_file.info.meta.crtime_nano
+            self.meta_changed_time = tsk_file.info.meta.ctime
+            self.meta_changed_time_nano = tsk_file.info.meta.ctime_nano
+            self.meta_flags = int(tsk_file.info.meta.flags)
+            self.meta_gid = tsk_file.info.meta.gid
+            self.meta_link = tsk_file.info.meta.link
+            self.meta_mode = int(tsk_file.info.meta.mode)
+            self.meta_modification_time = tsk_file.info.meta.mtime
+            self.meta_modification_time_nano = tsk_file.info.meta.mtime_nano
+            self.meta_nlink = tsk_file.info.meta.nlink
+            self.meta_seq = tsk_file.info.meta.seq
+            self.meta_size = tsk_file.info.meta.size
+            self.meta_tag = tsk_file.info.meta.tag
+            self.meta_type = str(tsk_file.info.meta.type)
+            self.meta_uid = tsk_file.info.meta.uid
+        if tsk_file.info.name is not None:
+            self.name_flags = int(tsk_file.info.name.flags)
+            self.name_meta_addr = tsk_file.info.name.meta_addr
+            self.name_meta_seq = tsk_file.info.name.meta_seq
+            self.name_name = tsk_file.info.name.name.decode("ascii")
+            self.name_size = tsk_file.info.name.name_size
+            self.name_par_addr = tsk_file.info.name.par_addr
+            self.name_par_seq = tsk_file.info.name.par_seq
+            self.name_short_name = tsk_file.info.name.shrt_name
+            self.name_short_name_size = tsk_file.info.name.shrt_name_size
+            self.name_tag = tsk_file.info.name.tag
+            self.name_type = str(tsk_file.info.name.type)
         self.attributes = []
         for tsk_attribute in tsk_file:
             self.attributes.append(Attribute(tsk_attribute=tsk_attribute))
 
     def __repr__(self):
         return ('HidsFile('
+                f'id="{self.id}",'
                 f'path="{self.path}",'
                 f'meta_addr={self.meta_addr},'
                 f'meta_access_time={self.meta_access_time},'
