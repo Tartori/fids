@@ -38,7 +38,7 @@ class FIDS:
         db_writer.finish_run(run)
         db_writer.commit()
 
-    def evaluate_intrusions(self):
+    def evaluate_intrusions(self, config):
         pass
 
 
@@ -46,3 +46,5 @@ if __name__ == "__main__":
     config = Config()
     if config.scan_config is not None:
         FIDS().scan_system(config)
+    if config.detection_config is not None:
+        FIDS().evaluate_intrusions(config)
