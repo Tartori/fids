@@ -1,18 +1,26 @@
 sqlite:
-  filename: fids_db2.db
+  filename: fids_db_testing.db
 
-scan:
-  image_path: ../images/usb1.dd
+scanas:
+  image_path: /dev/nvme0n1p5
   scan_paths: 
     [
-      "/",
+      "/home/julian/fids/",
       "/nonExisting",
     ]
   ignore_paths: 
     [
-      
+      "/home/julian/fids/.git/",
     ]
   validate_mode: true
+
+  
 detection:
-  fixed_values: []
-  compared: []
+  filename_regex: ''
+  greater: [
+    meta_size
+  ]
+  equal: [
+    meta_creation_time
+  ]
+  same_config: False

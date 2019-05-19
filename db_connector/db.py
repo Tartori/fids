@@ -1,8 +1,10 @@
 import sqlite3
 import os.path
+from hids_file import HidsFile
+from fids_run import FidsRun
 
 
-class DatabaseWriter:
+class Database:
     def __init__(self, db_config):
         filepath = db_config.filename
         needs_init = not os.path.exists(filepath)
@@ -244,3 +246,25 @@ class DatabaseWriter:
 
     def commit(self):
         self.conn.commit()
+
+    def read_runs(self):
+        self.cursor.execute(
+            "SELECT * FROM FIDS_RUN WHERE finish_time is not null;")
+        runs = []
+        rows = self.cursor.fetchall()
+        for row in rows:
+            run = FidsRun()
+            run.set_everything(*row)
+            runs.append(run)
+        return runs
+
+    def read_files_for_run(self, run_id):
+        self.cursor.execute(
+            "SELECT * FROM FIDS_FILE WHERE run_id = ?;", (run_id,))
+        files = []
+        rows = self.cursor.fetchall()
+        for row in rows:
+            file = HidsFile()
+            file.set_everything(*row)
+            files.append(file)
+        return files
