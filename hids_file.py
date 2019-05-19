@@ -20,15 +20,20 @@ class Run:
 class Attribute:
     def __init__(self,
                  tsk_attribute=None,
+                 id=None,
                  flags=0,
-                 id=0,
+                 tsk_id=0,
                  name="",
                  name_size=0,
                  at_type="",
                  runs=[]
                  ):
+        if id is None:
+            self.id = uuid.uuid1().hex
+        else:
+            self.id = id
         self.flags = flags
-        self.id = id
+        self.tsk_id = tsk_id
         self.name = name
         self.name_size = name_size
         self.at_type = at_type
@@ -38,7 +43,7 @@ class Attribute:
 
     def parse_tsk_attribute(self, tsk_attribute):
         self.flags = int(tsk_attribute.info.flags)
-        self.id = tsk_attribute.info.id
+        self.tsk_id = tsk_attribute.info.id
         self.name = tsk_attribute.info.name
         self.name_size = tsk_attribute.info.name_size
         self.at_type = str(tsk_attribute.info.type)
@@ -48,8 +53,9 @@ class Attribute:
 
     def __repr__(self):
         return ('Attribute('
-                f'flags="{self.flags}",'
                 f'id={self.id},'
+                f'flags="{self.flags}",'
+                f'tsk_id={self.tsk_id},'
                 f'name={self.name},'
                 f'name_size={self.name_size},'
                 f'at_type={self.at_type},'

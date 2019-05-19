@@ -74,9 +74,10 @@ class Database:
         self.cursor.execute(
             ("CREATE TABLE FIDS_FILE_ATTRIBUTE("
                 "run_id varchar(255),"
-                "file_id int,"
+                "file_id varchar(255),"
+                "id varchar(255),"
                 "flags int,"
-                "id int,"
+                "tsk_id int,"
                 "name varchar(255),"
                 "name_size int,"
                 "at_type varchar(255), "
@@ -85,8 +86,8 @@ class Database:
         self.cursor.execute(
             ("CREATE TABLE FIDS_FILE_ATTRIBUTE_RUN("
                 "run_id varchar(255),"
-                "file_id int,"
-                "attribute_id int, "
+                "file_id varchar(255),"
+                "attribute_id varchar(255), "
                 "block_addr int, "
                 "length int, "
                 " PRIMARY KEY(run_id, file_id, attribute_id, block_addr) "
@@ -206,19 +207,21 @@ class Database:
             ("INSERT INTO FIDS_FILE_ATTRIBUTE("
                 "run_id,"
                 "file_id,"
-                "flags,"
                 "id,"
+                "flags,"
+                "tsk_id,"
                 "name,"
                 "name_size,"
                 "at_type"
                 ")values("
-                "?,?,?,?,?,?,?); "
+                "?,?,?,?,?,?,?,?); "
              ),
             (
                 run_id,
                 file_id,
-                attribute.flags,
                 attribute.id,
+                attribute.flags,
+                attribute.tsk_id,
                 attribute.name,
                 attribute.name_size,
                 attribute.at_type
