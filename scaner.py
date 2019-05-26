@@ -19,6 +19,7 @@ class Scanner:
         self.fs_info.info
         self.stack = []
         for path in self.paths:
+            print(f'start scan for path \'{path}\'')
             try:
                 self.open_directory_rec(path, self.fs_info.open_dir(path))
             except:
@@ -27,7 +28,6 @@ class Scanner:
         print("Scan Done")
 
     def open_directory_rec(self, path, curDir):
-        print(path)
         self.stack.append(curDir.info.fs_file.meta.addr)
         try:
             if path in self.ignore_paths:
@@ -39,7 +39,6 @@ class Scanner:
                    not hasattr(directory_entry.info.name, "name") or
                    directory_entry.info.name.name in [b".", b".."]):
                     continue
-                print(directory_entry.info.name.name)
                 if directory_entry.info.name.type == pytsk3.TSK_FS_NAME_TYPE_DIR:
                     sub_directory = directory_entry.as_directory()
                     inode = directory_entry.info.meta.addr
@@ -53,8 +52,9 @@ class Scanner:
                     hids_file = HidsFile(path=path)
                     hids_file.parse_tsk_file(directory_entry)
                     self.files.append(hids_file)
+                    if hids_file.name_name == 'FileToBeDeletedWithVeryAppropropriateNameToFindIt.txt':
+                        print(hids_file)
         except Exception as e:
-            print(e)
             self.errors.append(
                 FidsError(
                     description=f'Unknown Error Occured \'{e}\'', location=f'Scanner.open_directory_rec(path=\'{path}\')'))
