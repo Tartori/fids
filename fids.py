@@ -22,6 +22,7 @@ class FIDS:
 
         scanner = Scanner(scan_config=config.scan_config)
         scanner.scan()
+        print("scanner done, inserting")
 
         errors = scanner.errors
         for error in errors:
@@ -62,7 +63,7 @@ class FIDS:
             if not cur_run.config_hash == prev_run.config_hash:
                 errors.append(DetectionError(
                     "Config Hashes not equal even as they should be!!!", "high"))
-
+        # todo: nice python code, sucks at execution
         files = [(prev_file, cur_file) for prev_file in prev_files for cur_file in cur_files if prev_file.path ==
                  cur_file.path and prev_file.meta_addr == cur_file.meta_addr]
         for prev_file, cur_file in files:

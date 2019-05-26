@@ -1,21 +1,20 @@
 sqlite:
-  filename: fids_db_testing.db
+  filename: fids_db3.db
 
-scanas:
+scan:
   image_path: /dev/nvme0n1p5
   scan_paths: 
     [
-      "/home/julian/fids/",
+      "/",
       "/nonExisting",
     ]
   ignore_paths: 
     [
-      "/home/julian/fids/.git/",
     ]
   validate_mode: true
 
   
-detection:
+detectionas:
   filename_regex: ''
   greater: [
     meta_size

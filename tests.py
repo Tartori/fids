@@ -7,17 +7,17 @@ def open_directory_rec(path):
     except:
         print("exception!")
         return
-    for element in curDir:
+    for tsk_file in curDir:
         print(path)
-        print(element.info.name.name)
-        print(element.info.name.type)
-        if element.info.name.type == pytsk3.TSK_FS_NAME_TYPE_DIR:
+        print(tsk_file.info.name.name)
+        print(tsk_file.info.name.type)
+        if tsk_file.info.name.type == pytsk3.TSK_FS_NAME_TYPE_DIR:
             print("directory!")
-            if(not element.info.name.name == b'.' and not element.info.name.name == b'..'):
+            if(not tsk_file.info.name.name == b'.' and not tsk_file.info.name.name == b'..'):
                 print("valid directory")
                 open_directory_rec(
-                    path + element.info.name.name.decode("ascii") + "/")
-        elif element.info.name.type == pytsk3.TSK_FS_NAME_TYPE_REG:
+                    path + tsk_file.info.name.name.decode("ascii") + "/")
+        elif tsk_file.info.name.type == pytsk3.TSK_FS_NAME_TYPE_REG:
             print("I'm a file")
 
 

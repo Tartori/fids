@@ -268,8 +268,8 @@ class HidsFile:
             self.name_tag = tsk_file.info.name.tag
             self.name_type = str(tsk_file.info.name.type)
         self.attributes = []
-        for tsk_attribute in tsk_file:
-            self.attributes.append(Attribute(tsk_attribute=tsk_attribute))
+        # for tsk_attribute in tsk_file:
+        #     self.attributes.append(Attribute(tsk_attribute=tsk_attribute))
 
     def __repr__(self):
         return ('HidsFile('
