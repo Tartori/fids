@@ -1,7 +1,7 @@
 sqlite:
   filename: fids_db3.db
 
-scan:
+scanas:
   image_path: /dev/nvme0n1p5
   scan_paths: 
     [
@@ -14,12 +14,35 @@ scan:
   validate_mode: true
 
   
-detectionas:
-  filename_regex: ''
-  greater: [
-    meta_size
-  ]
-  equal: [
-    meta_creation_time
-  ]
-  same_config: False
+investigator:
+  rules: 
+    - name: php
+      inlcuded: 
+        - m
+        - i
+        - l
+        - n
+        - a
+      equal:
+        - meta_creation_time
+        - meta_size
+      regex: '*.php'
+    - name: logs
+      greater:
+        - meta_size
+      equal:
+        - meta_creation_time
+  investigations:
+    - paths:
+        - '/etc'
+      filegroupregex:
+        - '/etc/*.php'
+        - '/var/www/html'
+      rules:
+        - php
+    - filegroupregex:
+        - '/*'
+      rules:
+        - logs
+
+

@@ -16,7 +16,6 @@ class Scanner:
         self.errors = []
         img_info = pytsk3.Img_Info(self.img_path)
         self.fs_info = pytsk3.FS_Info(img_info, offset=0)
-        self.fs_info.info
         self.stack = []
         for path in self.paths:
             print(f'start scan for path \'{path}\'')

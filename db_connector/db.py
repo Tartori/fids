@@ -16,24 +16,24 @@ class Database:
     def setup(self):
         self.cursor.execute(
             ("CREATE TABLE FIDS_RUN("
-                "id varchar(255), "
-                "config_hash varchar(255), "
+                "id varchar(32), "
+                "config_hash varchar(64), "
                 "start_time int, "
                 "finish_time int, "
-                " PRIMARY KEY(id)"
+                "PRIMARY KEY(id)"
                 ");"))
         self.cursor.execute(
             ("CREATE TABLE FIDS_ERROR("
-                "run_id varchar(255), "
-                "id varchar(255), "
+                "run_id varchar(32), "
+                "id varchar(32), "
                 "description text, "
                 "location varchar(255), "
-                " PRIMARY KEY(run_id, id)"
+                "PRIMARY KEY(run_id, id)"
                 ");"))
         self.cursor.execute(
             ("CREATE TABLE FIDS_FILE("
-                "run_id varchar(255),"
-                "id varchar(255),"
+                "run_id varchar(32),"
+                "id varchar(32),"
                 "path text, "
                 "meta_addr int,"
                 "meta_access_time int,"
@@ -68,30 +68,30 @@ class Database:
                 "name_short_name_size int,"
                 "name_tag int,"
                 "name_type varchar(255),"
-                " PRIMARY KEY (run_id, id)"
+                "PRIMARY KEY (run_id, id)"
                 ");")
         )
         self.cursor.execute(
             ("CREATE TABLE FIDS_FILE_ATTRIBUTE("
-                "run_id varchar(255),"
-                "file_id varchar(255),"
-                "id varchar(255),"
+                "run_id varchar(32),"
+                "file_id varchar(32),"
+                "id varchar(32),"
                 "flags int,"
                 "tsk_id int,"
                 "name varchar(255),"
                 "name_size int,"
                 "at_type varchar(255), "
-                " PRIMARY KEY (run_id, file_id, id)"
+                "PRIMARY KEY (run_id, file_id, id)"
                 ");"))
         self.cursor.execute(
             ("CREATE TABLE FIDS_FILE_ATTRIBUTE_RUN("
-                "run_id varchar(255),"
-                "file_id varchar(255),"
-                "attribute_id varchar(255), "
-                "id varchar(255), "
+                "run_id varchar(32),"
+                "file_id varchar(32),"
+                "attribute_id varchar(32), "
+                "id varchar(32), "
                 "block_addr int, "
                 "length int, "
-                " PRIMARY KEY(run_id, file_id, attribute_id, id) "
+                "PRIMARY KEY(run_id, file_id, attribute_id, id) "
                 ");"))
 
     def start_run(self, run):
