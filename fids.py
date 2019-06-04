@@ -6,7 +6,7 @@ from db_connector.db import Database
 from fids_run import FidsRun
 from detection_error import DetectionError
 import re
-from operator import itemgetter, attrgetter, methodcaller
+from operator import attrgetter
 
 
 class FIDS:
