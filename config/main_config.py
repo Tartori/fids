@@ -1,7 +1,5 @@
 import yaml
-from config.scan_config import ScanConfig
-from config.db_config import SqLiteDbConfig, RemoteDbConfig
-from config.detection_config import DetectionConfig
+from config import ScanConfig, SqLiteDbConfig, RemoteDbConfig, DetectionConfig
 
 
 class Config:

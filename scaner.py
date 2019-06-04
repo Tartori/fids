@@ -16,30 +16,43 @@ class Scanner:
         self.errors = []
         img_info = pytsk3.Img_Info(self.img_path)
         self.fs_info = pytsk3.FS_Info(img_info, offset=0)
-        self.fs_info.info
+        self.stack = []
         for path in self.paths:
-            self.open_directory_rec(path)
-        return self.files
+            print(f'start scan for path \'{path}\'')
+            try:
+                self.open_directory_rec(path, self.fs_info.open_dir(path))
+            except:
+                self.errors.append(FidsError(
+                    description=f'could not open path \'{path}\'', location="Scanner.open_directory_rec"))
+        print("Scan Done")
 
-    def open_directory_rec(self, path):
+    def open_directory_rec(self, path, curDir):
+        self.stack.append(curDir.info.fs_file.meta.addr)
         try:
             if path in self.ignore_paths:
                 return
-            try:
-                curDir = self.fs_info.open_dir(path)
-            except:
-                self.errors.append(FidsError(
-                    description=f'could not open path \'{path}\'', location=f'Scanner.open_directory_rec(path=\'{path}\')'))
-                return
-            for element in curDir:
-                if element.info.name.type == pytsk3.TSK_FS_NAME_TYPE_DIR:
-                    if(not element.info.name.name == b'.' and not element.info.name.name == b'..'):
+
+            for directory_entry in curDir:
+                if(not hasattr(directory_entry, "info") or
+                   not hasattr(directory_entry.info, "name") or
+                   not hasattr(directory_entry.info.name, "name") or
+                   directory_entry.info.name.name in [b".", b".."]):
+                    continue
+                if directory_entry.info.name.type == pytsk3.TSK_FS_NAME_TYPE_DIR:
+                    sub_directory = directory_entry.as_directory()
+                    inode = directory_entry.info.meta.addr
+                    # This ensures that we don't recurse into a directory
+                    # above the current level and thus avoid circular loops.
+                    if inode not in self.stack:
                         self.open_directory_rec(
-                            path + element.info.name.name.decode("ascii") + "/")
-                elif element.info.name.type == pytsk3.TSK_FS_NAME_TYPE_REG:
+                            f'{path}{directory_entry.info.name.name}/',
+                            sub_directory)
+                elif directory_entry.info.name.type == pytsk3.TSK_FS_NAME_TYPE_REG:
                     hids_file = HidsFile(path=path)
-                    hids_file.parse_tsk_file(element)
+                    hids_file.parse_tsk_file(directory_entry)
                     self.files.append(hids_file)
+                    if hids_file.name_name == 'FileToBeDeletedWithVeryAppropropriateNameToFindIt.txt':
+                        print(hids_file)
         except Exception as e:
             self.errors.append(
                 FidsError(

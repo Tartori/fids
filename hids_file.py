@@ -268,8 +268,8 @@ class HidsFile:
             self.name_tag = tsk_file.info.name.tag
             self.name_type = str(tsk_file.info.name.type)
         self.attributes = []
-        for tsk_attribute in tsk_file:
-            self.attributes.append(Attribute(tsk_attribute=tsk_attribute))
+        # for tsk_attribute in tsk_file:
+        #     self.attributes.append(Attribute(tsk_attribute=tsk_attribute))
 
     def __repr__(self):
         return ('HidsFile('
@@ -309,16 +309,3 @@ class HidsFile:
                 f'name_tag={self.name_tag},'
                 f'name_type={self.name_type},'
                 ')')
-
-
-# pytsk3.TSK_FS_META_MODE_IRUSR.__str__()
-# pytsk3.TSK_FS_META_MODE_IRGRP.__str__()
-# pytsk3.TSK_FS_META_MODE_IROTH.__str__()
-# pytsk3.TSK_FS_META_MODE_IWUSR.__str__()
-# pytsk3.TSK_FS_META_MODE_IWGRP.__str__()
-# pytsk3.TSK_FS_META_MODE_IWOTH.__str__()
-# pytsk3.TSK_FS_META_MODE_IXUSR.__str__()
-# pytsk3.TSK_FS_META_MODE_IXGRP.__str__()
-# pytsk3.TSK_FS_META_MODE_IXOTH.__str__()
-# path
-# tsk_file.info.name.type
