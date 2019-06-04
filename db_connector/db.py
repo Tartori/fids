@@ -60,7 +60,7 @@ class Database:
                 "name_flags int,"
                 "name_meta_addr int,"
                 "name_meta_seq int,"
-                "name_name int,"
+                "name_name varchar(255),"
                 "name_size int,"
                 "name_par_addr int,"
                 "name_par_seq int,"
@@ -267,4 +267,19 @@ class Database:
             file = HidsFile()
             file.set_everything(*row)
             files.append(file)
+        return files
+
+    def read_files_for_two_runs(self, first_run_id, second_run_id):
+        self.cursor.execute(
+            "SELECT * FROM FIDS_FILE first FULL OUTER JOIN FIDS_FILE second on (first.meta_addr=second.meta_addr or first.path=second.path and first.name_name=second.name_name) WHERE first.run_id = ? and second.run_id=';", (first_run_id, second_run_id,))
+        files = []
+        rows = self.cursor.fetchall()
+        for row in rows:
+            first_file = HidsFile()
+            second_file = HidsFile()
+            first = row[0:len(row)/2]
+            second = row[len(row)/2:len(row)]
+            first_file.set_everything(*first)
+            second_file.set_everything(*second)
+            files.append((first_file, second_file))
         return files

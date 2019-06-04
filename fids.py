@@ -50,12 +50,9 @@ class FIDS:
         runs = self.db.read_runs()
         sorted_runs = sorted(runs, key=attrgetter('finish_time'), reverse=True)
         cur_run = sorted_runs[0]
+        prev_run = sorted_runs[1]
         if len(sorted_runs) < 2:
             return
-        if cur_files is None:
-            cur_files = self.db.read_files_for_run(cur_run.id)
-        prev_run = sorted_runs[1]
-        prev_files = self.db.read_files_for_run(prev_run.id)
 
         errors = []
 
@@ -64,8 +61,7 @@ class FIDS:
                 errors.append(DetectionError(
                     "Config Hashes not equal even as they should be!!!", "high"))
         # todo: nice python code, sucks at execution
-        files = [(prev_file, cur_file) for prev_file in prev_files for cur_file in cur_files if prev_file.path ==
-                 cur_file.path and prev_file.meta_addr == cur_file.meta_addr]
+        files = self.db.read_files_for_two_runs(cur_run.id, prev_run.id)
         for prev_file, cur_file in files:
             if detection_config.filename_regex and not re.search(detection_config.filename_regex, cur_file.name_name):
                 errors.append(DetectionError(
