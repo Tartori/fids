@@ -68,11 +68,11 @@ class Database:
                 "name_short_name_size int,"
                 "name_tag int,"
                 "name_type varchar(255),"
-                "PRIMARY KEY (run_id, id),"
+                "PRIMARY KEY (run_id, id)"
                 ");")
         )
         self.cursor.execute(
-            "create INDEX inode on FIDS_FILE(meta_addr)")
+            "create INDEX inode on FIDS_FILE(meta_addr);")
         self.cursor.execute(
             "create INDEX fullpath on FIDS_FILE(path, name_name)")
         self.cursor.execute(

@@ -45,7 +45,7 @@ class Scanner:
                     # above the current level and thus avoid circular loops.
                     if inode not in self.stack:
                         self.open_directory_rec(
-                            f'{path}{directory_entry.info.name.name}/',
+                            f'{path}{directory_entry.info.name.name.encode('utf8')}/',
                             sub_directory)
                 elif directory_entry.info.name.type == pytsk3.TSK_FS_NAME_TYPE_REG:
                     hids_file = HidsFile(path=path)
