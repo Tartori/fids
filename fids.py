@@ -49,10 +49,10 @@ class FIDS:
         detection_config = self.config.detection_config
         runs = self.db.read_runs()
         sorted_runs = sorted(runs, key=attrgetter('finish_time'), reverse=True)
-        cur_run = sorted_runs[0]
-        prev_run = sorted_runs[1]
         if len(sorted_runs) < 2:
             return
+        cur_run = sorted_runs[0]
+        prev_run = sorted_runs[1]
 
         errors = []
 
