@@ -68,7 +68,9 @@ class Database:
                 "name_short_name_size int,"
                 "name_tag int,"
                 "name_type varchar(255),"
-                "PRIMARY KEY (run_id, id)"
+                "PRIMARY KEY (run_id, id),"
+                "INDEX inode (meta_addr),"
+                "INDEX fullpath (path, name_name)"
                 ");")
         )
         self.cursor.execute(
@@ -271,7 +273,7 @@ class Database:
 
     def read_files_for_two_runs(self, first_run_id, second_run_id):
         self.cursor.execute(
-            "SELECT * FROM FIDS_FILE first FULL OUTER JOIN FIDS_FILE second on (first.meta_addr=second.meta_addr or first.path=second.path and first.name_name=second.name_name) WHERE first.run_id = ? and second.run_id=';", (first_run_id, second_run_id,))
+            "SELECT * FROM FIDS_FILE first LEFT JOIN FIDS_FILE second on (first.meta_addr=second.meta_addr or first.path=second.path and first.name_name=second.name_name) WHERE first.run_id = ? and second.run_id=? or second.run_id is null;", (first_run_id, second_run_id,))
         files = []
         rows = self.cursor.fetchall()
         for row in rows:
