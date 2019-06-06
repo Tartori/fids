@@ -15,33 +15,35 @@ scanas:
 
   
 investigator:
+  same_config: True
   rules: 
     - name: php
-      inlcuded: 
+      rules: 
         - m
         - i
         - l
         - n
+        - logs
         - a
       equal:
         - meta_creation_time
         - meta_size
-      regex: '*.php'
     - name: logs
       greater:
         - meta_size
       equal:
         - meta_creation_time
+      rules:
+        - php
   investigations:
     - paths:
         - '/etc'
-      filegroupregex:
-        - '/etc/*.php'
-        - '/var/www/html'
+      fileregexwhitelist:
+        - '*.php'
       rules:
         - php
-    - filegroupregex:
-        - '/*'
+    - fileregexwhitelist: '/*'
+      fileregexblacklist: '*evilfile*'
       rules:
         - logs
 
