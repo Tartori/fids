@@ -84,13 +84,6 @@ class FIDS:
 
 if __name__ == "__main__":
     config = Config()
-
-    cfg = Config()
-    i_cfg = cfg.investigator_config
-    print(i_cfg)
-    i_cfg.expand_rules()
-    print(i_cfg)
-else:
     fids = FIDS(config)
     if config.scan_config is not None:
         fids.scan_system()
