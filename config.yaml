@@ -23,7 +23,6 @@ investigator:
         - i
         - l
         - n
-        - logs
         - a
       equal:
         - meta_creation_time
@@ -34,7 +33,6 @@ investigator:
       equal:
         - meta_creation_time
       rules:
-        - php
   investigations:
     - paths:
         - '/etc'
