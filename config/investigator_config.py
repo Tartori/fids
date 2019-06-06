@@ -7,6 +7,8 @@ class InvestigatorConfig:
             config['investigations'] if 'investigations' in keys else None)
         self.same_config = config['same_config'] if 'same_config' in keys else True
         self.validation_run = config['validation_run'] if 'validation_run' in keys else ''
+        self.greater = []
+        self.equal = []
 
     def _add_default_rules(self):
         self.rules = []
@@ -41,13 +43,6 @@ class InvestigatorConfig:
         for inestigation in investigation_config:
             self.investigations.append(
                 InvestigationsConfig(config=inestigation))
-
-    def expand_rules(self):
-        for rule in self.rules:
-            rule.clean_greater_and_equal()
-            rule.expand_rules(self.rules)
-        for investigation in self.investigations:
-            investigation.validate_rules(self.rules)
 
     def __repr__(self):
         return ("InvestigatorConfig("

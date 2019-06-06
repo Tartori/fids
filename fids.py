@@ -62,20 +62,23 @@ class FIDS:
                     "Config Hashes not equal even as they should be!!!", "high"))
         files = self.db.read_files_for_two_runs(cur_run.id, prev_run.id)
         for prev_file, cur_file in files:
-            if investigator_config.filename_regex and not re.search(investigator_config.filename_regex, cur_file.name_name):
-                errors.append(DetectionError(
-                    ('FileName Regex does not match even as it should!!!'
-                     'Regex:\'{investigator_config.filename_regex}\', filename: \'{cur_file.name_name}\')'), "high"))
-            for equal_attr in investigator_config.equal:
-                if not getattr(prev_file, equal_attr) == getattr(cur_file, equal_attr):
-                    errors.append(DetectionError((
-                        f'Attributes not equal even as they should be. '
-                        f'File: \'{cur_file.name_name}\' Attribute \'{equal_attr}\' prev: \'{getattr(prev_file, equal_attr)}\' cur: \'{getattr(cur_file, equal_attr)}\'!!!'), "high"))
-            for greater_attr in investigator_config.greater:
-                if not getattr(prev_file, greater_attr) <= getattr(cur_file, greater_attr):
+            for investigation in investigator_config.investigations:
+                if investigation.fileregexwhitelist and re.search(investigation.filename_regex, cur_file.name_name):
+                    continue
+                if investigation.fileregexblacklist and not re.search(investigation.filename_regex, cur_file.name_name):
                     errors.append(DetectionError(
-                        f'Attributes not greater or equal even as they should be. '
-                        f'\'{cur_file.name_name}\' Attribute \'{greater_attr}\' prev: \'{getattr(prev_file, greater_attr)}\' cur: \'{getattr(cur_file, greater_attr)}\'!!!', "high"))
+                        ('FileName Regex does not match even as it should!!!'
+                         'Regex:\'{investigation.fileregexblacklist}\', filename: \'{cur_file.name_name}\')'), "high"))
+                for equal_attr in investigation.equal:
+                    if not getattr(prev_file, equal_attr) == getattr(cur_file, equal_attr):
+                        errors.append(DetectionError((
+                            f'Attributes not equal even as they should be. '
+                            f'File: \'{cur_file.name_name}\' Attribute \'{equal_attr}\' prev: \'{getattr(prev_file, equal_attr)}\' cur: \'{getattr(cur_file, equal_attr)}\'!!!'), "high"))
+                for greater_attr in investigation.greater:
+                    if not getattr(prev_file, greater_attr) <= getattr(cur_file, greater_attr):
+                        errors.append(DetectionError(
+                            f'Attributes not greater or equal even as they should be. '
+                            f'\'{cur_file.name_name}\' Attribute \'{greater_attr}\' prev: \'{getattr(prev_file, greater_attr)}\' cur: \'{getattr(cur_file, greater_attr)}\'!!!', "high"))
         print(errors)
 
 
