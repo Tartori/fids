@@ -16,9 +16,10 @@ scan:
 
   
 investigatorasd:
+  same_config: True
   rules: 
     - name: php
-      inlcuded: 
+      rules: 
         - m
         - i
         - l
@@ -27,22 +28,21 @@ investigatorasd:
       equal:
         - meta_creation_time
         - meta_size
-      regex: '*.php'
     - name: logs
       greater:
         - meta_size
       equal:
         - meta_creation_time
+      rules:
   investigations:
     - paths:
         - '/etc'
-      filegroupregex:
-        - '/etc/*.php'
-        - '/var/www/html'
+      fileregexwhitelist:
+        - '*.php'
       rules:
         - php
-    - filegroupregex:
-        - '/*'
+    - fileregexwhitelist: '/*'
+      fileregexblacklist: '*evilfile*'
       rules:
         - logs
 

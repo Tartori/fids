@@ -46,7 +46,7 @@ class FIDS:
         self.db.commit()
 
     def evaluate_intrusions(self, cur_files=None):
-        detection_config = self.config.detection_config
+        investigator_config = self.config.investigator_config
         runs = self.db.read_runs()
         sorted_runs = sorted(runs, key=attrgetter('finish_time'), reverse=True)
         if len(sorted_runs) < 2:
@@ -56,27 +56,29 @@ class FIDS:
 
         errors = []
 
-        if detection_config.same_config:
+        if investigator_config.same_config:
             if not cur_run.config_hash == prev_run.config_hash:
                 errors.append(DetectionError(
                     "Config Hashes not equal even as they should be!!!", "high"))
-        # todo: nice python code, sucks at execution
         files = self.db.read_files_for_two_runs(cur_run.id, prev_run.id)
         for prev_file, cur_file in files:
-            if detection_config.filename_regex and not re.search(detection_config.filename_regex, cur_file.name_name):
-                errors.append(DetectionError(
-                    ('FileName Regex does not match even as it should!!!'
-                     'Regex:\'{detection_config.filename_regex}\', filename: \'{cur_file.name_name}\')'), "high"))
-            for equal_attr in detection_config.equal:
-                if not getattr(prev_file, equal_attr) == getattr(cur_file, equal_attr):
-                    errors.append(DetectionError((
-                        f'Attributes not equal even as they should be. '
-                        f'File: \'{cur_file.name_name}\' Attribute \'{equal_attr}\' prev: \'{getattr(prev_file, equal_attr)}\' cur: \'{getattr(cur_file, equal_attr)}\'!!!'), "high"))
-            for greater_attr in detection_config.greater:
-                if not getattr(prev_file, greater_attr) <= getattr(cur_file, greater_attr):
+            for investigation in investigator_config.investigations:
+                if investigation.fileregexwhitelist and re.search(investigation.filename_regex, cur_file.name_name):
+                    continue
+                if investigation.fileregexblacklist and not re.search(investigation.filename_regex, cur_file.name_name):
                     errors.append(DetectionError(
-                        f'Attributes not greater or equal even as they should be. '
-                        f'\'{cur_file.name_name}\' Attribute \'{greater_attr}\' prev: \'{getattr(prev_file, greater_attr)}\' cur: \'{getattr(cur_file, greater_attr)}\'!!!', "high"))
+                        ('FileName Regex does not match even as it should!!!'
+                         'Regex:\'{investigation.fileregexblacklist}\', filename: \'{cur_file.name_name}\')'), "high"))
+                for equal_attr in investigation.equal:
+                    if not getattr(prev_file, equal_attr) == getattr(cur_file, equal_attr):
+                        errors.append(DetectionError((
+                            f'Attributes not equal even as they should be. '
+                            f'File: \'{cur_file.name_name}\' Attribute \'{equal_attr}\' prev: \'{getattr(prev_file, equal_attr)}\' cur: \'{getattr(cur_file, equal_attr)}\'!!!'), "high"))
+                for greater_attr in investigation.greater:
+                    if not getattr(prev_file, greater_attr) <= getattr(cur_file, greater_attr):
+                        errors.append(DetectionError(
+                            f'Attributes not greater or equal even as they should be. '
+                            f'\'{cur_file.name_name}\' Attribute \'{greater_attr}\' prev: \'{getattr(prev_file, greater_attr)}\' cur: \'{getattr(cur_file, greater_attr)}\'!!!', "high"))
         print(errors)
 
 
@@ -85,7 +87,7 @@ if __name__ == "__main__":
     fids = FIDS(config)
     if config.scan_config is not None:
         fids.scan_system()
-    if config.detection_config is not None:
+    if config.investigator_config is not None:
         fids.evaluate_intrusions()
 
 
