@@ -1,7 +1,7 @@
 sqlite:
   filename: fids_db3.db
 
-scan:
+scanasd:
   image_path: /dev/disk2
   offset: 7168
   scan_paths: 
@@ -15,35 +15,25 @@ scan:
   validate_mode: true
 
   
-investigatorasd:
+investigator:
   same_config: True
   rules: 
-    - name: php
+    - name: newfile
       rules: 
         - m
         - i
         - l
-        - n
+        - 'n'
         - a
       equal:
         - meta_creation_time
         - meta_size
-    - name: logs
-      greater:
-        - meta_size
-      equal:
-        - meta_creation_time
-      rules:
   investigations:
     - paths:
-        - '/etc'
-      fileregexwhitelist:
-        - '*.php'
+        - '/'
       rules:
-        - php
-    - fileregexwhitelist: '/*'
-      fileregexblacklist: '*evilfile*'
-      rules:
-        - logs
+        - newfile
+    - fileregexwhitelist: '.exe$'
+      fileregexblacklist: '.exe$'
 
 
