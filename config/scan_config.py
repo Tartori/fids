@@ -2,6 +2,7 @@ class ScanConfig:
     def __init__(self, config):
         keys = config.keys()
         self.image_path = config['image_path'] if 'image_path' in keys else ''
+        self.offset = config['offset'] if 'offset' in keys else 0
         self.scan_paths = config['scan_paths'] if 'scan_paths' in keys else [
             '/']
         self.ignore_paths = config['ignore_paths'] if 'ignore_paths' in keys else [
