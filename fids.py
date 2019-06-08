@@ -64,6 +64,8 @@ class FIDS:
         files = self.db.read_files_for_two_runs(cur_run.id, prev_run.id)
         for prev_file, cur_file in files:
             for investigation in investigator_config.investigations:
+                if len(investigation.paths) >= 1 and (not prev_file.path == cur_file.path or not any(prev_file.path.startswith(path) for path in investigation.paths)):
+                    continue
                 if not investigation.fileregexwhitelist == '' and not re.search(investigation.fileregexwhitelist, cur_file.name_name):
                     continue
                 if investigation.fileregexblacklist and re.search(investigation.fileregexblacklist, cur_file.name_name):
