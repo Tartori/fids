@@ -7,6 +7,7 @@ class Scanner:
 
     def __init__(self, scan_config):
         self.img_path = scan_config.image_path
+        self.offset = scan_config.offset
         self.paths = scan_config.scan_paths
         self.ignore_paths = scan_config.ignore_paths
         self.scan_config = scan_config
@@ -15,7 +16,7 @@ class Scanner:
         self.files = []
         self.errors = []
         img_info = pytsk3.Img_Info(self.img_path)
-        self.fs_info = pytsk3.FS_Info(img_info, offset=0)
+        self.fs_info = pytsk3.FS_Info(img_info, offset=self.offset)
         self.stack = []
         for path in self.paths:
             print(f'start scan for path \'{path}\'')
@@ -43,7 +44,7 @@ class Scanner:
                     inode = directory_entry.info.meta.addr
                     # This ensures that we don't recurse into a directory
                     # above the current level and thus avoid circular loops.
-                    dirname = directory_entry.info.name.name.encode('utf8')
+                    dirname = directory_entry.info.name.name.decode('utf8')
                     if inode not in self.stack:
                         self.open_directory_rec(
                             (f'{path}'
@@ -61,3 +62,6 @@ class Scanner:
 
 if __name__ == "__main__":
     from pprint import pprint
+
+
+# 17:57 - 17:59

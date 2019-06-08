@@ -279,11 +279,5 @@ class Database:
         files = []
         rows = self.cursor.fetchall()
         for row in rows:
-            first_file = HidsFile()
-            second_file = HidsFile()
-            first = row[0:len(row)/2]
-            second = row[len(row)/2:len(row)]
-            first_file.set_everything(*first)
-            second_file.set_everything(*second)
-            files.append((first_file, second_file))
+            files.append(HidsFile.fromTwoEntry(*row))
         return files

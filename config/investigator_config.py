@@ -44,6 +44,13 @@ class InvestigatorConfig:
             self.investigations.append(
                 InvestigationsConfig(config=inestigation))
 
+    def prepare_investigations(self):
+        for rule in self.rules:
+            rule.clean_greater_and_equal()
+            rule.expand_rules(self.rules)
+        for investigation in self.investigations:
+            investigation.validate_rules(self.rules)
+
     def __repr__(self):
         return ("InvestigatorConfig("
                 f"rules={self.rules},"
