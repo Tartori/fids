@@ -66,6 +66,8 @@ class InvestigationsConfig:
         self.paths = config['paths'] if 'paths' in keys else []
         self.fileregexwhitelist = config['fileregexwhitelist'] if 'fileregexwhitelist' in keys else ''
         self.fileregexblacklist = config['fileregexblacklist'] if 'fileregexblacklist' in keys else ''
+        self.whitelist_negated = config['whitelist_negated'] if 'whitelist_negated' in keys else False
+        self.blacklist_negated = config['blacklist_negated'] if 'blacklist_negated' in keys else False
         self.rules = config['rules'] if 'rules' in keys else []
         self.greater = []
         self.equal = []

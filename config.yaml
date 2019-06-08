@@ -35,5 +35,7 @@ investigator:
         - newfile
     - fileregexwhitelist: '.exe$'
       fileregexblacklist: '.exe$'
+      whitelist_negated: false
+      blacklist_negated: false
 
 

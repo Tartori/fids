@@ -275,7 +275,7 @@ class Database:
 
     def read_files_for_two_runs(self, first_run_id, second_run_id):
         self.cursor.execute(
-            "SELECT * FROM FIDS_FILE first LEFT JOIN FIDS_FILE second on (first.meta_addr=second.meta_addr or first.path=second.path and first.name_name=second.name_name) WHERE first.run_id = ? and second.run_id=? or second.run_id is null;", (first_run_id, second_run_id,))
+            "SELECT first.*, second.* FROM FIDS_FILE first LEFT JOIN FIDS_FILE second on (first.meta_addr=second.meta_addr or first.path=second.path and first.name_name=second.name_name) WHERE first.run_id = ? and second.run_id=? or second.run_id is null UNION SELECT first.*, second.*;", (first_run_id, second_run_id,))
         files = []
         rows = self.cursor.fetchall()
         for row in rows:
