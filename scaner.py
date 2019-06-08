@@ -53,8 +53,6 @@ class Scanner:
                     hids_file = HidsFile(path=path)
                     hids_file.parse_tsk_file(directory_entry)
                     self.files.append(hids_file)
-                    if hids_file.name_name == 'FileToBeDeletedWithVeryAppropropriateNameToFindIt.txt':
-                        print(hids_file)
         except Exception as e:
             self.errors.append(
                 FidsError(
