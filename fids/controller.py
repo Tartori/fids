@@ -1,12 +1,41 @@
-from fids import Scanner
-from fids import HidsFile
-from fids import FidsError
-from fids.config import Config
-from fids.db_connector import Database
-from fids import FidsRun
-from fids import DetectionError
+from scaner import Scanner
+from hids_file import HidsFile
+from fids_error import FidsError
+from config import Config
+from db_connector.db import Database
+from fids_run import FidsRun
+from detection_error import DetectionError
 import re
 from operator import attrgetter
+import sys
+
+"""
+
+FIDS.PY
+
+NAME
+       fids - Detect intrusions by using forensic techniques.
+
+SYNOPSIS
+       fids.py [-m] [--config=path]
+
+DESCRIPTION
+        fids is used to detect intrusions by analyzing filesystem
+        metadata. It can also generate a timeline when used with 
+        a tool like mactime
+
+ARGUMENTS
+       -m
+              Generate the bodyfile output for timeline creation
+
+       --config=path
+              Specify the location of the config file.  fids
+              uses this config file instead of the default location
+
+AUTHOR
+       Tartori
+
+"""
 
 
 class FIDS:
@@ -15,12 +44,12 @@ class FIDS:
         self.config = config
 
     def scan_system(self):
-        run = FidsRun(config)
+        run = FidsRun(self.config)
 
         self.db.start_run(run)
         self.db.commit()
 
-        scanner = Scanner(scan_config=config.scan_config)
+        scanner = Scanner(scan_config=self.config.scan_config)
         scanner.scan()
         print("scanner done, inserting")
 
@@ -123,15 +152,3 @@ class FIDS:
                     f'{f.meta_modification_time}|'
                     f'{f.meta_changed_time}|'
                     f'{f.meta_creation_time}')
-
-
-if __name__ == "__main__":
-    default_config = './config.yaml'
-
-    config = Config(config_file=default_config)
-    fids = FIDS(config)
-    fids.timeline_creation()
-    if config.scan_config is not None:
-        fids.scan_system()
-    if config.investigator_config is not None:
-        fids.evaluate_intrusions()

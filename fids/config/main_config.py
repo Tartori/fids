@@ -1,5 +1,5 @@
 import yaml
-from fids.config import ScanConfig, SqLiteDbConfig, RemoteDbConfig, InvestigatorConfig
+from config import ScanConfig, SqLiteDbConfig, RemoteDbConfig, InvestigatorConfig
 
 
 class Config:
