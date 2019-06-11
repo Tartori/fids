@@ -76,7 +76,7 @@ class FIDS:
                     continue
                 if len(investigation.paths) >= 1 and (not prev_file.path == cur_file.path or not any(prev_file.path.startswith(path) for path in investigation.paths)):
                     continue
-                if not investigation.fileregexwhitelist == '' and (investigation.whitelist_negated == re.search(investigation.fileregexwhitelist, cur_file.name_name):
+                if not investigation.fileregexwhitelist == '' and investigation.whitelist_negated == re.search(investigation.fileregexwhitelist, cur_file.name_name):
                     continue
                 if investigation.fileregexblacklist and investigation.blacklist_negated != re.search(investigation.fileregexblacklist, cur_file.name_name):
                     errors.append(DetectionError(
@@ -99,8 +99,8 @@ class FIDS:
 
 
 if __name__ == "__main__":
-    config=Config()
-    fids=FIDS(config)
+    config = Config()
+    fids = FIDS(config)
     if config.scan_config is not None:
         fids.scan_system()
     if config.investigator_config is not None:
