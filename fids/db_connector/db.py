@@ -281,3 +281,14 @@ class Database:
         for row in rows:
             files.append(HidsFile.fromTwoEntry(*row))
         return files
+
+    def read_all_files(self):
+        self.cursor.execute(
+            "SELECT * FROM FIDS_FILE ;", ())
+        files = set()
+        rows = self.cursor.fetchall()
+        for row in rows:
+            f = HidsFile()
+            f.set_everything(*row)
+            files.add(f)
+        return files

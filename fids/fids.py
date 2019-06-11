@@ -64,6 +64,12 @@ class FIDS:
         files = self.db.read_files_for_two_runs(cur_run.id, prev_run.id)
         for prev_file, cur_file in files:
             for investigation in investigator_config.investigations:
+                if len(investigation.paths) >= 1 and (not prev_file.path == cur_file.path or not any(prev_file.path.startswith(path) for path in investigation.paths)):
+                    continue
+                if not investigation.fileregexwhitelist == '' and investigation.whitelist_negated == re.search(investigation.fileregexwhitelist, cur_file.name_name):
+                    continue
+                if prev_file.meta_addr != cur_file.meta_addr and prev_file.name_name == cur_file.name_name and 'file_rename_ok' in investigation.rules:
+                    continue
                 if prev_file.path is None or prev_file.path == '' and not 'new_files_ok' in investigation.rules:
                     errors.append(DetectionError(
                         ('Found a new file!!!'
@@ -74,14 +80,12 @@ class FIDS:
                         ('Found a deleted file!!!'
                          f'Path:\'{prev_file.path}\', filename: \'{prev_file.name_name}\', inode: \'{prev_file.meta_addr}\')'), "high"))
                     continue
-                if len(investigation.paths) >= 1 and (not prev_file.path == cur_file.path or not any(prev_file.path.startswith(path) for path in investigation.paths)):
-                    continue
-                if not investigation.fileregexwhitelist == '' and investigation.whitelist_negated == re.search(investigation.fileregexwhitelist, cur_file.name_name):
-                    continue
                 if investigation.fileregexblacklist and investigation.blacklist_negated != re.search(investigation.fileregexblacklist, cur_file.name_name):
                     errors.append(DetectionError(
                         ('FileName from blacklist actually found!!!'
                          f'Regex:\'{investigation.fileregexblacklist}\', filename: \'{cur_file.name_name}\')'), "high"))
+                    continue
+                if(prev_file == cur_file):
                     continue
                 for equal_attr in investigation.equal:
                     if not getattr(prev_file, equal_attr) == getattr(cur_file, equal_attr):
@@ -97,14 +101,37 @@ class FIDS:
             print(f'Found Error: {error}')
         print(f'Total of {len(errors)} Errors')
 
+    def timeline_creation(self):
+        files = self.db.read_all_files()
+        for f in files:
+            mode = ''
+            cur_mode = f.meta_mode
+            for _ in range(3):
+                for m in ['x', 'w', 'r']:
+                    mv = m if cur_mode % 2 else '-'
+                    mode = mv + mode
+                    cur_mode //= 2
+                print(
+                    '0|'
+                    f'something/{f.name_name}|'
+                    f'{f.meta_addr}|'
+                    f'{mode}|'
+                    f'{f.meta_uid}|'
+                    f'{f.meta_gid}|'
+                    f'{f.meta_size}|'
+                    f'{f.meta_access_time}|'
+                    f'{f.meta_modification_time}|'
+                    f'{f.meta_changed_time}|'
+                    f'{f.meta_creation_time}')
+
 
 if __name__ == "__main__":
-    config = Config()
+    default_config = './config.yaml'
+
+    config = Config(config_file=default_config)
     fids = FIDS(config)
+    fids.timeline_creation()
     if config.scan_config is not None:
         fids.scan_system()
     if config.investigator_config is not None:
         fids.evaluate_intrusions()
-
-
-# 18:41-1849

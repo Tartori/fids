@@ -460,3 +460,44 @@ class HidsFile:
                 f'name_tag={self.name_tag},'
                 f'name_type={self.name_type},'
                 ')')
+    def __key(self):
+        return (self.path
+        ,self.meta_addr
+        ,self.meta_access_time
+        ,self.meta_access_time_nano
+        ,self.meta_attr_state
+        ,self.meta_content_len
+        ,self.meta_content_ptr
+        ,self.meta_creation_time
+        ,self.meta_changed_time
+        ,self.meta_creation_time_nano
+        ,self.meta_changed_time_nano
+        ,self.meta_flags
+        ,self.meta_gid
+        ,self.meta_link
+        ,self.meta_mode
+        ,self.meta_modification_time
+        ,self.meta_modification_time_nano
+        ,self.meta_nlink
+        ,self.meta_seq
+        ,self.meta_size
+        ,self.meta_tag
+        ,self.meta_type
+        ,self.meta_uid
+        ,self.name_flags
+        ,self.name_meta_addr
+        ,self.name_meta_seq
+        ,self.name_name
+        ,self.name_size
+        ,self.name_par_addr
+        ,self.name_par_seq
+        ,self.name_short_name
+        ,self.name_short_name_size
+        ,self.name_tag
+        ,self.name_type)
+
+    def __hash__(self):
+        return hash(self.__key())
+        
+    def __eq__(self, other):
+        return isinstance(self, type(other)) and self.__key() == other.__key()
