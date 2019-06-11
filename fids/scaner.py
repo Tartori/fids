@@ -1,6 +1,6 @@
 import pytsk3
-from hids_file import HidsFile
-from fids_error import FidsError
+from fids import HidsFile
+from fids import FidsError
 
 
 class Scanner:
@@ -62,6 +62,3 @@ class Scanner:
 
 if __name__ == "__main__":
     from pprint import pprint
-
-
-# 17:57 - 17:59

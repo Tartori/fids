@@ -1,7 +1,7 @@
 import sqlite3
 import os.path
-from hids_file import HidsFile
-from fids_run import FidsRun
+from fids import HidsFile
+from fids import FidsRun
 
 
 class Database:

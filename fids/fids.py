@@ -1,10 +1,10 @@
-from scaner import Scanner
-from hids_file import HidsFile
-from fids_error import FidsError
-from config import Config
-from db_connector.db import Database
-from fids_run import FidsRun
-from detection_error import DetectionError
+from fids import Scanner
+from fids import HidsFile
+from fids import FidsError
+from fids.config import Config
+from fids.db_connector import Database
+from fids import FidsRun
+from fids import DetectionError
 import re
 from operator import attrgetter
 

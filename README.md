@@ -1,21 +1,5 @@
 # fids
 
-## todo
+The FIDS uses a risk based approach on host-based intrusion detection systems (HIDS) that are based on file system monitoring (FIM).
 
-* fix runtime
-* files is very slow -> fix
-* alerting
-* use tsk for recursion
-* update delta
-* compare using fls
-* -v flag
-* scan_objects
-
-## links
-
-<http://www.sleuthkit.org/sleuthkit/docs/api-docs/4.2/structTSK__FS__FILE.html#a74c7fc77db20b5c4efc617806fd49e2e>
-<https://github.com/py4n6/pytsk/wiki/Development>$
-
-## source
-
-https://github.com/Tartori/fids<https://github.com/Tartori/fids>
+HIDS have generally gotten slower with increased storage capacitz. This is due to the fact that more data means longer time to calculate hashes. The fids doesn't need to calculate hashes. It is based on the sleuth kit (tsk) and uses file system attributes to find intrusions.
