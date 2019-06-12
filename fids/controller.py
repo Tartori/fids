@@ -1,10 +1,10 @@
-from scaner import Scanner
-from hids_file import HidsFile
-from fids_error import FidsError
-from config import Config
-from db_connector.db import Database
-from fids_run import FidsRun
-from detection_error import DetectionError
+from fids.scaner import Scanner
+from fids.hids_file import HidsFile
+from fids.fids_error import FidsError
+from fids.config import Config
+from fids.db_connector.db import Database
+from fids.fids_run import FidsRun
+from fids.detection_error import DetectionError
 import re
 from operator import attrgetter
 import sys
@@ -140,15 +140,15 @@ class FIDS:
                     mv = m if cur_mode % 2 else '-'
                     mode = mv + mode
                     cur_mode //= 2
-                print(
-                    '0|'
-                    f'something/{f.name_name}|'
-                    f'{f.meta_addr}|'
-                    f'{mode}|'
-                    f'{f.meta_uid}|'
-                    f'{f.meta_gid}|'
-                    f'{f.meta_size}|'
-                    f'{f.meta_access_time}|'
-                    f'{f.meta_modification_time}|'
-                    f'{f.meta_changed_time}|'
-                    f'{f.meta_creation_time}')
+            print(
+                '0|'
+                f'{f.path}{f.name_name}|'
+                f'{f.meta_addr}|'
+                f'{mode}|'
+                f'{f.meta_uid}|'
+                f'{f.meta_gid}|'
+                f'{f.meta_size}|'
+                f'{f.meta_access_time}|'
+                f'{f.meta_modification_time}|'
+                f'{f.meta_changed_time}|'
+                f'{f.meta_creation_time}')

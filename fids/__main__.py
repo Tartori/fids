@@ -1,5 +1,5 @@
-from controller import FIDS
-from config import Config
+from fids.controller import FIDS
+from fids.config import Config
 import sys
 
 if __name__ == "__main__":

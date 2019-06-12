@@ -1,6 +1,6 @@
 import pytsk3
-from hids_file import HidsFile
-from fids_error import FidsError
+from fids.hids_file import HidsFile
+from fids.fids_error import FidsError
 
 
 class Scanner:
